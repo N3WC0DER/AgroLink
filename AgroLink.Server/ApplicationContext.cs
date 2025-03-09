@@ -14,6 +14,7 @@ namespace AgroLink.Server
         {
             Database.EnsureCreated();
             // jrehfgerj
+            // testt
         }
     }
 }

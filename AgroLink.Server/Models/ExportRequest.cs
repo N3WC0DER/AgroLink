@@ -8,7 +8,17 @@
 
         public required DateTime DateTime { get; set; }
 
-        public required String Status { get; set; }
+        public required ExportStatus Status { get; set; }
 
+           
     }
+
+    public enum ExportStatus
+    {
+        Active,
+        InProcessing,
+        SentForDelivery,
+        Closed
+    }
+
 }

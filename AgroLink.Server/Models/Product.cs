@@ -4,10 +4,10 @@
     {
         public required int Id { get; set; }
 
-        public required String KindName { get; set; }
+        public required ProductKind Kind { get; set; }
 
         public required String Name { get; set; }
 
-        public required String UnitName { get; set; }
+        public required MeasurementUnit UnitName { get; set; }
     }
 }

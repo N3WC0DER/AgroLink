@@ -10,7 +10,8 @@
 
         public required ExportStatus Status { get; set; }
 
-           
+        public required byte Photo {  get; set; }
+        
     }
 
     public enum ExportStatus

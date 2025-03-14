@@ -8,6 +8,6 @@
 
         public required String Name { get; set; }
 
-        public required MeasurementUnit UnitName { get; set; }
+        public required MeasurementUnit Unit { get; set; }
     }
 }

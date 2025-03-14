@@ -10,7 +10,7 @@
         public required string Phone { get; set; }
         public required string Email { get; set; }
         public required DateTime DateTime { get; set; }
-        public required string LinkEndpoint { get; set; }
+        public required string? LinkEndpoint { get; set; }
     
     }
 }

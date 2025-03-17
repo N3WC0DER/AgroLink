@@ -1,5 +1,8 @@
-﻿namespace AgroLink.Server.Models
+﻿using System.ComponentModel.DataAnnotations.Schema;
+
+namespace AgroLink.Server.Models
 {
+    [Table("Suppliers")]
     public class Supplier : User
     {
 

@@ -1,5 +1,8 @@
-﻿namespace AgroLink.Server.Models
+﻿using System.ComponentModel.DataAnnotations.Schema;
+
+namespace AgroLink.Server.Models
 {
+    [Table("Forwarders")]
     public class Forwarder : User 
     {
         public required byte[] Photo { get; set; }

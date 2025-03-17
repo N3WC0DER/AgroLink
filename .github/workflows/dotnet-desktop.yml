@@ -1,0 +1,33 @@
+name: Format C# Code
+
+on:
+  pull_request:
+    branches:
+      - master
+
+jobs:
+  format:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v3
+
+    - name: Set up .NET
+      uses: actions/setup-dotnet@v3
+      with:
+        dotnet-version: '8.0.x'  # Укажите версию .NET, которую используете
+
+    - name: Install dotnet-format
+      run: dotnet tool install -g dotnet-format
+
+    - name: Format C# code
+      run: dotnet format --check
+
+    - name: Commit and push changes
+      run: |
+        git config --global user.name "github-actions[bot]"
+        git config --global user.email "github-actions[bot]@users.noreply.github.com"
+        git add .
+        git commit -m "Automated code formatting" || echo "No changes to commit"
+        git push

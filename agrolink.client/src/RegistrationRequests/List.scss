@@ -1,0 +1,12 @@
+#registration-requests {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    row-gap: 10px;
+
+    .item {
+        display: flex;
+        flex-direction: row;
+        justify-content: space-around;
+    }
+}

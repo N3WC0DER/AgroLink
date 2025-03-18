@@ -1,3 +1,4 @@
+using System.Collections;
 using AgroLink.Server;
 using Microsoft.EntityFrameworkCore;
 
@@ -11,9 +12,21 @@ string connection = builder.Configuration.GetConnectionString("DefaultConnection
 builder.Services.AddDbContext<ApplicationContext>(options => options.UseSqlServer(connection));
 
 builder.Services.AddControllers();
-// Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
+
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
+
+// ASPNETCORE_HTTPS_PORT
+// ASPNETCORE_URLS
+// TODO: replace to env variables!!!
+
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy("AllowLocalhostOrigin",
+        builder => builder.WithOrigins("https://localhost:24683")
+                            .AllowAnyHeader()
+                            .AllowAnyMethod());
+});
 
 var app = builder.Build();
 
@@ -30,6 +43,8 @@ if (app.Environment.IsDevelopment())
 app.UseHttpsRedirection();
 
 app.UseAuthorization();
+
+app.UseCors("AllowLocalhostOrigin");
 
 app.MapControllers();
 

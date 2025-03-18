@@ -1,4 +1,7 @@
 import { Component } from 'react';
+import './min.css';
+import './Welcome.scss';
+import { API } from './api.jsx';
 
 export default class Welcome extends Component {
 
@@ -9,30 +12,35 @@ export default class Welcome extends Component {
     }
 
     onSubmit(e) {
-        e.preventDefault();
-         let formData = e.data;
-         let data = {
-             name: formData.get("name"),
-             location: formData.get("location"),
-             phone: formData.get("phone"),
-             email: formData.get("email"),
-             datetime: new Date
-         }
+        let formData = e;
+        let data = {
+            id: 0,
+            name: formData.get("name"),
+            location: formData.get("location"),
+            phone: formData.get("phone"),
+            email: formData.get("email"),
+            datetime: new Date,
+            linkEndpoint: null
+        }
 
         let xhr = new XMLHttpRequest();
-        xhr.open("post", "/registration/request", true);
+        xhr.open("post", API.registration_request, true);
         xhr.setRequestHeader("Content-Type", "application/json");
         xhr.onload = function () {
-            if (xhr.status == 200) {
-
-            }
+            console.debug("done.");
         }
+
+        xhr.onerror = function () {
+            console.debug("server error");
+        }
+
+        xhr.send(JSON.stringify(data));
     }
 
     render() {
         return (
             <>
-                <form action={this.onSubmit}>
+                <form action={this.onSubmit} id="registration">
                     <input name="name" placeholder="name"></input>
                     <input name="location" placeholder="location"></input>
                     <input name="phone" placeholder="phone"></input>

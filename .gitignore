@@ -361,4 +361,5 @@ MigrationBackup/
 
 # Fody - auto-generated XML schema
 FodyWeavers.xsd
+/AgroLink.Server/appsettings.json
 /agrolink.client/package-lock.json

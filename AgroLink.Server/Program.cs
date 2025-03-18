@@ -1,7 +1,9 @@
 using AgroLink.Server;
 using Microsoft.EntityFrameworkCore;
 
-var builder = WebApplication.CreateBuilder(args);
+var configuration = new WebApplicationOptions() { WebRootPath = "../agrolink.client/", Args = args };
+
+var builder = WebApplication.CreateBuilder(configuration);
 
 // Add services to the container.
 

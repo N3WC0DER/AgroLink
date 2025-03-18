@@ -1,32 +1,32 @@
-import React from 'react';
+import { Component } from 'react';
 
-export default class Welcome extends React.Component {
+export default class Welcome extends Component {
 
     constructor(props) {
         super(props);
 
-        this.state = { ok: false };
+        this.state = { counter: 0 };
     }
 
     onSubmit(e) {
         e.preventDefault();
-        let formData = e.data;
-        let data = {
-            name: formData.get("name"),
-            location: formData.get("location"),
-            phone: formData.get("phone"),
-            email: formData.get("email"),
-            datetime: new Date
+         let formData = e.data;
+         let data = {
+             name: formData.get("name"),
+             location: formData.get("location"),
+             phone: formData.get("phone"),
+             email: formData.get("email"),
+             datetime: new Date
+         }
+
+        let xhr = new XMLHttpRequest();
+        xhr.open("post", "/registration/request", true);
+        xhr.setRequestHeader("Content-Type", "application/json");
+        xhr.onload = function () {
+            if (xhr.status == 200) {
+
+            }
         }
-
-        //let xhr = new XMLHttpRequest();
-        //xhr.open("post", "/registration/request", true);
-        //xhr.setRequestHeader("Content-Type", "application/json");
-        //xhr.onload = function () {
-        //    if (xhr.status == 200) {
-
-        //    }
-        //}
     }
 
     render() {

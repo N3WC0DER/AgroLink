@@ -1,4 +1,4 @@
-import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
+import { BrowserRouter as Router, Route, Routes, Navigate } from 'react-router-dom';
 import { StrictMode } from 'react'
 import { createRoot } from 'react-dom/client'
 import './index.css'
@@ -9,8 +9,9 @@ createRoot(document.getElementById('root')).render(
     <StrictMode>
         <Router>
             <Routes>
-                <Route path="/" element={<Welcome />} />
+                <Route index path="/" element={<Welcome />} />
                 <Route path="/home" element={<Home />} />
+                <Route path="*" element={<Navigate to="/" replace />} />
             </Routes>
         </Router>
     </StrictMode>,

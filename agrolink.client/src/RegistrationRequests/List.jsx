@@ -19,7 +19,6 @@ export default class List extends Component {
             if (xhr.status >= 200 && xhr.status < 300) {
                 let requests = JSON.parse(xhr.response);
                 console.debug("Requests loaded: " + requests.length);
-                console.debug(requests);
                 this.setState({ requests: requests, loading: false });
             } else {
                 this.setState({ error: `Îøèáêà: ${xhr.statusText}`, loading: false });

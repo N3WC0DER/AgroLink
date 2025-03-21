@@ -11,8 +11,7 @@ export default class Welcome extends Component {
         this.state = { counter: 0 };
     }
 
-    onSubmit(e) {
-        let formData = e;
+    onSubmit(formData) {
         let data = {
             id: 0,
             name: formData.get("name"),

@@ -1,4 +1,5 @@
 import { Component } from 'react';
+import { API } from '../api.jsx';
 
 export default class ListItem extends Component {
 
@@ -37,12 +38,41 @@ export default class ListItem extends Component {
         }));
     };
 
+    onSubmit = (req) => {
+
+        const { inputs } = this.state;
+
+        const request = {
+            id: req.id,
+            name: inputs.find(input => input.name === "name").value,
+            location: inputs.find(input => input.name === "location").value,
+            phone: inputs.find(input => input.name === "phone").value,
+            email: inputs.find(input => input.name === "email").value,
+            datetime: req.dateTime,
+            linkEndpoint: req.linkEndpoint
+        };
+
+        let xhr = new XMLHttpRequest();
+        xhr.open("put", API.registration_request + "/" + request.id, true);
+        xhr.setRequestHeader("Content-Type", "application/json");
+        xhr.onload = function () {
+            console.debug("done.");
+            window.location.reload();
+        }
+
+        xhr.onerror = function () {
+            console.debug("server error");
+        }
+
+        xhr.send(JSON.stringify(request));
+    }
+
 
     render() {
         const { request } = this.props;
         const { prevRequest } = this.state;
 
-        if (prevRequest !== request) {
+        if (prevRequest != request) {
             this.setState({
                 prevRequest: request,
 
@@ -62,13 +92,14 @@ export default class ListItem extends Component {
 
             requestHtml = (
                 <>
-                    <form>
+                    <form action={this.onSubmit.bind(this, request)} autoComplete="off">
                         {
                             inputs.map((value, id) => (
                                 <label key={id}>
                                     {value.name}:
                                     <div className="row">
                                         <input
+                                            name={value.name}
                                             type={value.type}
                                             id={value.name}
                                             value={value.value}

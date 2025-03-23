@@ -2,6 +2,7 @@
 using AgroLink.Server.Models;
 using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Mvc;
+using AgroLink.Server.Services;
 
 namespace AgroLink.Server.Controllers
 {
@@ -12,21 +13,26 @@ namespace AgroLink.Server.Controllers
     public class RegistrationController : ControllerBase
     {
 
-        private ILogger<RegistrationController> logger;
+        private readonly ILogger logger;
         private ApplicationContext database;
+        private EmailService emailService;
 
-        public RegistrationController(ILogger<RegistrationController> logger, ApplicationContext database)
+        public RegistrationController(
+            ILogger<RegistrationController> logger,
+            ApplicationContext database,
+            EmailService emailService
+        )
         {
             this.logger = logger;
             this.database = database;
+            this.emailService = emailService;
         }
 
         // GET: api/<RegistrationController>/requests
         [HttpGet("requests")]
         public async Task<List<RegistrationRequest>> Get(int? id)
         {
-            return await (from request in database.RegistrationRequests
-                   select request).ToListAsync();
+            return await database.RegistrationRequests.ToListAsync();
         }
 
         // GET: api/<RegistrationController>/{guid}
@@ -49,9 +55,30 @@ namespace AgroLink.Server.Controllers
 
         // PUT api/<RegistrationController>/requests/{id}
         [HttpPut("requests/{id}")]
-        public IResult Put(int id, [FromBody] RegistrationRequest request)
+        public async Task<IResult> Put(int id, [FromBody] RegistrationRequest request)
         {
-            // todo: update it
+            var req = await database.RegistrationRequests.FirstOrDefaultAsync(u => u.Id == request.Id);
+
+            if (req == null) return Results.NotFound(new { message = "Request not found." });
+
+            req.Name = request.Name;
+            req.Location = request.Location;
+            req.Phone = request.Phone;
+            req.Email = request.Email;
+            req.Status = RegistrationStatus.Closed;
+
+            await database.SaveChangesAsync();
+
+            await this.emailService.SendEmailAsync(req.Email, "Ссылка для входа на сайт", "https://agrolink.ru/" + req.LinkEndpoint);
+
+            return Results.Json(req);
+        }
+
+        // PATCH api/<RegistrationController>/requests/{id}
+        [HttpPatch("requests/{id}")]
+        public IResult Patch(int id, int status)
+        {
+            // todo: change status
             return Results.Ok();
         }
 

@@ -1,7 +1,7 @@
 import { Component } from 'react';
 import { API } from '../api.jsx';
 
-export default class ListItem extends Component {
+export default class Request extends Component {
 
     constructor(props) {
         super(props);
@@ -44,11 +44,12 @@ export default class ListItem extends Component {
 
         const request = {
             id: req.id,
+            status: req.status,
             name: inputs.find(input => input.name === "name").value,
             location: inputs.find(input => input.name === "location").value,
             phone: inputs.find(input => input.name === "phone").value,
             email: inputs.find(input => input.name === "email").value,
-            datetime: req.dateTime,
+            datetime: req.dateTime + "Z",
             linkEndpoint: req.linkEndpoint
         };
 

@@ -1,6 +1,7 @@
-using System.Collections;
 using AgroLink.Server;
+using AgroLink.Server.Services;
 using Microsoft.EntityFrameworkCore;
+using MimeKit;
 
 var configuration = new WebApplicationOptions() { WebRootPath = "../agrolink.client/", Args = args };
 
@@ -8,8 +9,23 @@ var builder = WebApplication.CreateBuilder(configuration);
 
 // Add services to the container.
 
+builder.Logging.ClearProviders();
+builder.Logging.AddConsole();
+builder.Logging.AddDebug();
+builder.Services.AddLogging();
+
 string connection = builder.Configuration.GetConnectionString("DefaultConnection");
 builder.Services.AddDbContext<ApplicationContext>(options => options.UseSqlServer(connection));
+
+var emailConfiguration = builder.Configuration.GetRequiredSection("Email");
+
+builder.Services.AddSingleton(services =>
+    new EmailService(
+        services.GetRequiredService<ILogger<EmailService>>(),
+        new MailboxAddress(emailConfiguration["Name"], emailConfiguration["Address"]),
+        emailConfiguration
+    )
+);
 
 builder.Services.AddControllers();
 

@@ -1,26 +1,29 @@
-import { Component } from 'react';
-import { API } from '../api.jsx';
+﻿import { Component } from 'react';
+import { API } from '../../api.jsx';
+import './Request.scss';
 
 export default class Request extends Component {
 
     constructor(props) {
         super(props);
 
+        const { request } = this.props;
+
         this.state = {
-            prevRequest: this.props.request,
-            
+            request: request,
+
             inputs: [
-                {name: "name", type: "text", value: "", isLocked: true},
-                {name: "location", type: "text", value: "", isLocked: true},
-                {name: "phone", type: "phone", value: "", isLocked: true},
-                {name: "email", type: "email", value: "", isLocked: true},
-            ],
+                { name: "name", type: "text", value: request.name, isLocked: true },
+                { name: "location", type: "text", value: request.location, isLocked: true },
+                { name: "phone", type: "phone", value: request.phone, isLocked: true },
+                { name: "email", type: "email", value: request.email, isLocked: true },
+            ]
         }
     }
 
     handleToggleLock = (id) => {
         this.setState((prevState) => ({
-            prevRequest: prevState.prevRequest,
+            request: prevState.request,
 
             inputs: prevState.inputs.map((input, index) =>
                 index === id ? { ...input, isLocked: !input.isLocked } : input
@@ -70,29 +73,12 @@ export default class Request extends Component {
 
 
     render() {
-        const { request } = this.props;
-        const { prevRequest } = this.state;
+        const { request, inputs } = this.state;
 
-        if (prevRequest != request) {
-            this.setState({
-                prevRequest: request,
-
-                inputs: [
-                    { name: "name", type: "text", value: request.name, isLocked: true },
-                    { name: "location", type: "text", value: request.location, isLocked: true },
-                    { name: "phone", type: "phone", value: request.phone, isLocked: true },
-                    { name: "email", type: "email", value: request.email, isLocked: true },
-                ],
-            })
-        }
-
-        let requestHtml = "Select request";
-
-        if (request) {
-            const { inputs } = this.state;
-
-            requestHtml = (
-                <>
+        return (
+            <>
+                <div id="request-modal">
+                    <h2>Обработка запроса #{request.id}</h2>
                     <form action={this.onSubmit.bind(this, request)} autoComplete="off">
                         {
                             inputs.map((value, id) => (
@@ -122,13 +108,7 @@ export default class Request extends Component {
                             Submit
                         </button>
                     </form>
-                </>
-            );
-        }
-
-        return (
-            <>
-                {requestHtml}
+                </div>
             </>
         );
     }

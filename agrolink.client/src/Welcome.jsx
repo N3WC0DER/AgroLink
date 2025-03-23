@@ -1,5 +1,4 @@
 import { Component } from 'react';
-import './min.css';
 import './Welcome.scss';
 import { API } from './api.jsx';
 

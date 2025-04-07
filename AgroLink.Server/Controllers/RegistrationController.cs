@@ -3,6 +3,7 @@ using AgroLink.Server.Models;
 using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Mvc;
 using AgroLink.Server.Services;
+using AgroLink.Server.Filters;
 
 namespace AgroLink.Server.Controllers
 {
@@ -30,36 +31,39 @@ namespace AgroLink.Server.Controllers
 
         // GET: api/<RegistrationController>/requests
         [HttpGet("requests")]
-        public async Task<List<RegistrationRequest>> Get(int? id)
+        public async Task<IEnumerable<RegistrationRequest>> Get(int? id)
         {
+            // replace to right: https://learn.microsoft.com/ru-ru/aspnet/core/web-api/action-return-types?view=aspnetcore-9.0
             return await database.RegistrationRequests.ToListAsync();
         }
 
         // GET: api/<RegistrationController>/{guid}
         [HttpGet("{guid}")]
-        public IResult Get(String guid)
+        public IActionResult Get(String guid)
         {
             // todo: view registration page
-            return Results.Json(guid);
+            return Ok(guid);
         }
 
         // POST api/<RegistrationController>/requests
         [HttpPost("requests")]
-        public async Task<IResult> Post([FromBody] RegistrationRequest request)
+        [TypeFilter<BadSqlExceptionFilter>]
+        public async Task<IActionResult> Post([FromBody] RegistrationRequest request)
         {
             request.LinkEndpoint = Guid.NewGuid().ToString();
             database.RegistrationRequests.Add(request);
             await database.SaveChangesAsync();
-            return Results.Ok();
+            return Ok();
         }
 
         // PUT api/<RegistrationController>/requests/{id}
         [HttpPut("requests/{id}")]
-        public async Task<IResult> Put(int id, [FromBody] RegistrationRequest request)
+        [TypeFilter<BadSqlExceptionFilter>]
+        public async Task<IActionResult> Put(int id, [FromBody] RegistrationRequest request)
         {
             var req = await database.RegistrationRequests.FirstOrDefaultAsync(u => u.Id == request.Id);
 
-            if (req == null) return Results.NotFound(new { message = "Request not found." });
+            if (req == null) return NotFound(new { message = "Request not found." });
 
             req.Name = request.Name;
             req.Location = request.Location;
@@ -71,7 +75,7 @@ namespace AgroLink.Server.Controllers
 
             await this.emailService.SendEmailAsync(req.Email, "Ссылка для входа на сайт", "https://agrolink.ru/" + req.LinkEndpoint);
 
-            return Results.Json(req);
+            return Ok(req);
         }
 
         // PATCH api/<RegistrationController>/requests/{id}

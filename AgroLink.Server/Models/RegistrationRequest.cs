@@ -9,15 +9,14 @@
 
     public class RegistrationRequest
     {
-
-        public required int Id { get; set; }
-        public required RegistrationStatus Status { get; set; }
+        public int Id { get; set; } = 0;
+        public RegistrationStatus Status { get; set; } = RegistrationStatus.Open;
         public required string Name { get; set; }
         public required string Location { get; set; }
         public required string Phone { get; set; }
         public required string Email { get; set; }
         public required DateTime DateTime { get; set; }
-        public required string? LinkEndpoint { get; set; }
+        public string? LinkEndpoint { get; set; }
     
     }
 }

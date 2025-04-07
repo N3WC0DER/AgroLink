@@ -8,7 +8,7 @@
 
         public required DateTime DateTime { get; set; }
 
-        public required ExportStatus Status { get; set; }
+        public required ExportStatus Status { get; set; } = ExportStatus.Active;
 
         public required Product Product { get; set; }
         

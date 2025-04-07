@@ -1,4 +1,4 @@
-import { Component } from 'react';
+﻿import { Component } from 'react';
 import './Welcome.scss';
 import { API } from './api.jsx';
 
@@ -12,13 +12,11 @@ export default class Welcome extends Component {
 
     onSubmit(formData) {
         let data = {
-            id: 0,
             name: formData.get("name"),
             location: formData.get("location"),
             phone: formData.get("phone"),
             email: formData.get("email"),
-            datetime: new Date,
-            linkEndpoint: null
+            datetime: new Date
         }
 
         let xhr = new XMLHttpRequest();
